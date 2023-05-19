@@ -1,6 +1,7 @@
 {
-  "name": "@reef-defi/ui-kit",
-  "version": "0.0.0-dev",
+  "name": "@reef-chain/ui-kit",
+  "version": "1.1.1",
+  "private":false,
   "files": [
     "dist",
     "src/",
