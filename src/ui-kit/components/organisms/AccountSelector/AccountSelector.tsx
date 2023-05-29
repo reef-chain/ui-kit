@@ -9,6 +9,7 @@ import Tabs from "../../atoms/Tabs"
 import Dropdown from "../../atoms/Dropdown/Dropdown"
 import DropdownItem from "../../atoms/Dropdown/DropdownItem"
 import Button from "../../atoms/Button";
+import { localizedStrings as strings } from "../../../l10n/l10n";
 
 export type Account = {
   name?: string,
@@ -82,7 +83,7 @@ const AccountSelector = ({
         >
           <div className="uik-account-selector__content">
             <div className="uik-account-selector__head">
-              <div className="uik-account-selector__title">Select Account</div>
+              <div className="uik-account-selector__title">{strings.select_account}</div>
 
               {
                !!onLanguageSelect &&
@@ -90,7 +91,7 @@ const AccountSelector = ({
   
               <Button
     fill
-    text='Choose Language'
+    text={strings.choose_language}
     size='large'
     onClick={() => setLanguageDropdown(true)}
   /> 
@@ -101,12 +102,18 @@ const AccountSelector = ({
       <DropdownItem
         icon={faGlobe}
         text='English'
-        onClick={() => onLanguageSelect('en')}
+        onClick={() => {
+          // onLanguageSelect('en');
+          strings.setLanguage('en');
+        }}
       />
       <DropdownItem
         icon={faGlobe}
         text='Hindi'
-        onClick={() => onLanguageSelect('hi')}
+        onClick={() => {
+          // onLanguageSelect('hi');
+          strings.setLanguage('hi');
+      }}
       />
       
   </Dropdown>
@@ -119,8 +126,8 @@ const AccountSelector = ({
                   className="uik-account-selector__network"
                   value={selectedNetwork}
                   options={[
-                    { value: "mainnet", text: "Mainnet" },
-                    { value: "testnet", text: "Testnet" }
+                    { value: "mainnet", text: strings.mainnet},
+                    { value: "testnet", text: strings.testnet }
                   ]}
                   onChange={onNetworkSelect}
                 />
