@@ -103,7 +103,7 @@ const AccountSelector = ({
         icon={faGlobe}
         text='English'
         onClick={() => {
-          // onLanguageSelect('en');
+          onLanguageSelect('en');
           strings.setLanguage('en');
         }}
       />
@@ -111,7 +111,7 @@ const AccountSelector = ({
         icon={faGlobe}
         text='Hindi'
         onClick={() => {
-          // onLanguageSelect('hi');
+          onLanguageSelect('hi');
           strings.setLanguage('hi');
       }}
       />
