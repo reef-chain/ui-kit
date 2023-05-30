@@ -38,6 +38,7 @@ export const formatHumanAmount = (amount: number | string, decPlaces: number = 2
   }
 
   if (isNaN(amount)) return String(amount)
+  if (Number(amount) === 0) return "0"
 
   decPlaces = Math.pow(10, decPlaces)
   const abbrev = ["k", "M", "B"]
