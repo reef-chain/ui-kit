@@ -89,11 +89,12 @@ const AccountSelector = ({
 <div className="uik-account-selector__language">
   
               <Button
-    fill
-    text='Choose Language'
-    size='large'
-    onClick={() => setLanguageDropdown(true)}
-  /> 
+                fill
+                text='Choose Language'
+                size='large'
+                onClick={() => setLanguageDropdown(true)}
+              /> 
+              <div className="uik-account-selector__language_dropdown_av">
   <Dropdown
     isOpen={isLanguageDropdownOpen}
     onClose={() => setLanguageDropdown(false)}
@@ -110,6 +111,7 @@ const AccountSelector = ({
       />
       
   </Dropdown>
+              </div>
 </div>
 }
 
