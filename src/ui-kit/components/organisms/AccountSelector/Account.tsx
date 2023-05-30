@@ -3,6 +3,7 @@ import { formatAddress  } from "../../../utils/format";
 import CopyButton from "../CopyButton"
 import Button from "../../atoms/Button"
 import QRCode from "../../atoms/QRCode"
+import { localizedStrings } from "../../../l10n/l10n";
 
 export interface Props {
   name?: string,
@@ -48,11 +49,11 @@ const Account = ({
       </div>
       
       <div className='uik-account-selector-account__address'>
-        <div>Native address: { formatAddress(address) }</div>
+        <div>{localizedStrings.native_address}: { formatAddress(address) }</div>
         <CopyButton
           value={address}
-          tooltip="Copy Reef account address to clipboard"
-          notification="Copied Reef Account Address to clipboard."
+          tooltip={localizedStrings.copy_reef_address}
+          notification={localizedStrings.copied_reef_address}
           onClick={e => e.stopPropagation()}
         />
       </div>
@@ -60,15 +61,15 @@ const Account = ({
       {
         !!evmAddress &&
         <div className='uik-account-selector-account__address'>
-          <div>Reef EVM address: { formatAddress(evmAddress) }</div>
+          <div>{localizedStrings.reef_evm_address}: { formatAddress(evmAddress) }</div>
           <CopyButton
             value={evmAddress}
-            tooltip="Copy Reef EVM address to clipboard"
+            tooltip={localizedStrings.copy_reef_evm}
             notification={{
               keepAlive: true,
               type: "danger",
-              message: "Copied Reef EVM address to clipboard.\nDO NOT use this Reef EVM address on any other chain. ONLY use it on Reef chain.",
-              children: <Button text="I understand"/>
+              message:localizedStrings.copied_reef_address,
+              children: <Button text={localizedStrings.i_understand}/>
             }}
             onClick={e => e.stopPropagation()}
           />
@@ -81,7 +82,7 @@ const Account = ({
         target="_blank"
         rel="noreferrer"
         onClick={e => e.stopPropagation()}
-      >Open in Explorer</a>
+      >{localizedStrings.open_in_explorer}</a>
 
     </div>
     
@@ -94,7 +95,7 @@ const Account = ({
 
     {
       isSelected &&
-      <div className='uik-account-selector-account__selected-tag'>Selected</div>
+      <div className='uik-account-selector-account__selected-tag'>{localizedStrings.selected}</div>
     }
   </button>
 )
