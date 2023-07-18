@@ -15,7 +15,8 @@ export type Account = {
   name?: string,
   address: string,
   evmAddress?: string,
-  source?: string
+  source?: string,
+  isEvmClaimed?:boolean,
 }
 
 export type Network = 'mainnet' | 'testnet'
@@ -158,6 +159,7 @@ const AccountSelector = ({
                     address={account.address}
                     evmAddress={account.evmAddress}
                     source={account.source}
+                    isEvmClaimed={account.isEvmClaimed}
                     onSelect={() => select(account)}
                     isSelected={isSelected(account)}
                   />
