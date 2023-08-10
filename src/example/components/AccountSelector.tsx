@@ -11,7 +11,8 @@ const accounts = [
   {
     name: "Test Account 2",
     address: "5HW5AhtsiFhqN6K2TfZHmanh9kboyuLrCddWpNtBuu2XzVPc",
-    evmAddress: "0x9f704566B7A3725f05A434959bA69e97B73c5B66"
+    evmAddress: "0x9f704566B7A3725f05A434959bA69e97B73c5B66",
+    isEvmClaimed:false
   },
   {
     name: "Test Account 3",

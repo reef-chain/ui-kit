@@ -12,7 +12,8 @@ export interface Props {
   source?: string,
   isSelected?: boolean,
   onSelect?: (...args: any[]) => any,
-  className?: string
+  className?: string,
+  isEvmClaimed?:boolean,
 }
 
 const Account = ({
@@ -21,6 +22,7 @@ const Account = ({
   evmAddress,
   source,
   isSelected,
+  isEvmClaimed,
   onSelect,
   className
 }: Props): JSX.Element => (
@@ -59,7 +61,7 @@ const Account = ({
       </div>
 
       {
-        !!evmAddress &&
+        !!evmAddress && isEvmClaimed!=false &&
         <div className='uik-account-selector-account__address'>
           <div>{localizedStrings.reef_evm_address}: { formatAddress(evmAddress) }</div>
           <CopyButton
