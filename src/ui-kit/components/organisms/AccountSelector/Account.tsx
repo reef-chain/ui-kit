@@ -88,6 +88,14 @@ const Account = ({
 
     </div>
     
+<div className="uik-account-selector__select_btn">
+<Button
+  fill
+    text={"Select"}
+    size='large'
+    onClick={onSelect}
+    /> 
+</div>
     <button
       type="button"
       className="uik-account-selector-account__qr-code"
