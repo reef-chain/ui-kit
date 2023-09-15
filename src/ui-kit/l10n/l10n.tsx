@@ -14,7 +14,8 @@ export const localizedStrings = new LocalizedStrings({
         copied_reef_evm:"Copied Reef EVM address to clipboard.\nDO NOT use this Reef EVM address on any other chain. ONLY use it on Reef chain.",
         i_understand:"I understand",
         open_in_explorer:"Open in Explorer",
-        selected:"Selected"
+        selected:"Selected",
+        select:"Select"
     },
     hi:{
         select_account: "खाता चुनें",
@@ -29,6 +30,7 @@ export const localizedStrings = new LocalizedStrings({
         copied_reef_evm: "रीफ ई वी एम पता क्लिपबोर्ड पर कॉपी किया गया।\nकृपया इस रीफ ई वी एम पते का किसी अन्य चेन पर उपयोग न करें। केवल रीफ चेन पर ही उपयोग करें।",
         i_understand: "मैं समझता हूँ",
         open_in_explorer: "एक्सप्लोरर में खोलें",
-        selected: "चयनित"
+        selected: "चयनित",
+        select:"चुनें"
     }
 })

@@ -91,7 +91,7 @@ const Account = ({
 <div className="uik-account-selector__select_btn">
 <Button
   fill
-    text={"Select"}
+    text={localizedStrings.select}
     size='large'
     onClick={onSelect}
     /> 
