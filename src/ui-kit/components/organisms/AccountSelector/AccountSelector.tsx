@@ -91,7 +91,6 @@ const AccountSelector = ({
 <div className="uik-account-selector__language">
   
               <Button
-                fill
                 text={strings.choose_language}
                 size='large'
                 onClick={() => setLanguageDropdown(true)}
