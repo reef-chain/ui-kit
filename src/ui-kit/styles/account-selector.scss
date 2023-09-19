@@ -1,4 +1,11 @@
 .uik-account-selector {
+  .uik-account-selector__select_btn {
+    border: none;
+    display: flex;
+    padding: 10px;
+    margin-left: auto;
+    margin-right: 40px;
+  }
   .uik-account-selector__wrapper {
     position: fixed;
     top: 0;
@@ -261,7 +268,6 @@
     box-shadow: var(--neomorph-in);
     border-radius: 10px;
     transition: all 0.125s;
-    margin-left: auto;
     pointer-events: none;
 
     .uik-qr-code {
