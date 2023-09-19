@@ -31,34 +31,34 @@ export const maxDecimals = (
   return Math[method]((num + Number.EPSILON) * decFactor) / decFactor
 }
 
-export const formatHumanAmount = (amount: number | string, decPlaces: number = 2): string => {
-  if (typeof amount === "string") {
-    amount = amount.replaceAll(",", "")
-    amount = new BigNumber(amount).toNumber()
+export const formatHumanAmount = (value: number | string, decPlaces: number = 2): string => {
+  if (typeof value === "string") {
+    value = value.replaceAll(",", "")
   }
+  let amount = new BigNumber(value);
 
-  if (isNaN(amount)) return String(amount)
-  if (Number(amount) === 0) return "0"
+  if (amount.isNaN()) return amount.toString();
+  if (amount.isZero()) return "0";
 
-  decPlaces = Math.pow(10, decPlaces)
-  const abbrev = ["k", "M", "B"]
+  decPlaces = Math.pow(10, decPlaces);
+  const abbrev = ["k", "M", "B", "T"];
 
   for (let i = abbrev.length - 1; i >= 0; i--) {
     const size = Math.pow(10, (i + 1) * 3)
 
-    if(size <= amount) {
-      amount = Math.round(amount * decPlaces / size) / decPlaces
+    if(amount.isGreaterThanOrEqualTo(size)) {
+      amount = amount.times(decPlaces).dividedBy(size).integerValue().dividedBy(decPlaces);
 
-      if(amount === 1000 && (i < abbrev.length - 1)) {
-        amount = 1
-        i++
+      if (amount.isEqualTo(1000) && (i < abbrev.length - 1)) {
+        amount = new BigNumber(1);
+        i += 1;
       }
 
       return String(`${amount} ${abbrev[i]}`);
     }
   }
 
-  if (amount < 1 / decPlaces) {
+  if (amount.isLessThan(1 / decPlaces)) {
     const exponentialNotation = amount.toExponential();
     const parts = exponentialNotation.split(/e/i);
     const coefficient = Math.round(parseFloat(parts[0]) * decPlaces) / decPlaces;
@@ -66,9 +66,5 @@ export const formatHumanAmount = (amount: number | string, decPlaces: number = 2
     return `${coefficient}e${exponent}`;
   }
 
-  amount = Math.round(amount * decPlaces) / decPlaces
-  return String(amount)
+  return String(amount.toFixed(decPlaces));
 }
-
-
-
