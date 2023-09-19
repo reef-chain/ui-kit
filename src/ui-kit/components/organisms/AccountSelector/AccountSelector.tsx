@@ -27,6 +27,7 @@ export interface Props {
   accounts?: Account[],
   selectedAccount?: Account | null | undefined,
   selectedNetwork?: Network,
+  availableNetworks?:Network[],
   onClose?: (...args: any[]) => any,
   onSelect?: (...args: any[]) => any,
   onNetworkSelect?: (network: Network) => any,
@@ -38,6 +39,7 @@ const AccountSelector = ({
   isOpen,
   accounts,
   selectedAccount,
+  availableNetworks,
   selectedNetwork,
   onClose,
   onSelect,
@@ -127,10 +129,9 @@ const AccountSelector = ({
                 <Tabs
                   className="uik-account-selector__network"
                   value={selectedNetwork}
-                  options={[
-                    { value: "mainnet", text: strings.mainnet},
-                    { value: "testnet", text: strings.testnet }
-                  ]}
+                  options={availableNetworks.map((val)=>{
+                    return {value:val,text:strings[val]}
+                  })}
                   onChange={onNetworkSelect}
                 />
                 }
