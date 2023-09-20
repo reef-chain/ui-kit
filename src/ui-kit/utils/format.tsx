@@ -40,25 +40,25 @@ export const formatHumanAmount = (value: number | string, decPlaces: number = 2)
   if (amount.isNaN()) return amount.toString();
   if (amount.isZero()) return "0";
 
-  decPlaces = Math.pow(10, decPlaces);
+  const decPowOfTen = Math.pow(10, decPlaces);
   const abbrev = ["k", "M", "B", "T"];
 
   for (let i = abbrev.length - 1; i >= 0; i--) {
     const size = Math.pow(10, (i + 1) * 3)
 
     if(amount.isGreaterThanOrEqualTo(size)) {
-      amount = amount.times(decPlaces).dividedBy(size).integerValue().dividedBy(decPlaces);
+      amount = amount.times(decPowOfTen).dividedBy(size).integerValue().dividedBy(decPowOfTen);
 
       if (amount.isEqualTo(1000) && (i < abbrev.length - 1)) {
         amount = new BigNumber(1);
         i += 1;
       }
 
-      return String(`${amount} ${abbrev[i]}`);
+      return `${amount.toString()} ${abbrev[i]}`;
     }
   }
 
-  if (amount.isLessThan(1 / decPlaces)) {
+  if (amount.isLessThan(1 / decPowOfTen)) {
     const exponentialNotation = amount.toExponential();
     const parts = exponentialNotation.split(/e/i);
     const coefficient = Math.round(parseFloat(parts[0]) * decPlaces) / decPlaces;
