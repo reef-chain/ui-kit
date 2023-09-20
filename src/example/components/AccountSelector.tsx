@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Title from "./Title"
 import Uik from "../../ui-kit"
+import { Network } from '../../ui-kit/components/organisms/AccountSelector/AccountSelector';
 
 const accounts = [
   {
@@ -24,6 +25,7 @@ const accounts = [
 function Example () {
   const [isOpen, setOpen] = useState(false)
   const [selected, setSelected] = useState(accounts[0])
+  const [selectedNetwork,setSelectedNetwork] = useState<Network>('mainnet')
 
   const selectAccount = account => {
     setSelected(account)
@@ -45,6 +47,9 @@ function Example () {
         isOpen={isOpen}
         accounts={accounts}
         selectedAccount={selected}
+        availableNetworks={['mainnet','testnet']}
+        onNetworkSelect={setSelectedNetwork}
+        selectedNetwork={selectedNetwork}
         onClose={() => setOpen(false)}
         onSelect={account => selectAccount(account)}
       />
