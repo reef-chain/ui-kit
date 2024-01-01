@@ -34,6 +34,7 @@ const Account = ({
     `}
     type="button"
     onClick={onSelect}
+    disabled={isSelected}
   >
     <Identicon
       value={address}
@@ -61,7 +62,7 @@ const Account = ({
       </div>
 
       {
-        !!evmAddress && isEvmClaimed!=false &&
+        !!evmAddress && isEvmClaimed!==false &&
         <div className='uik-account-selector-account__address'>
           <div>{localizedStrings.reef_evm_address}: { formatAddress(evmAddress) }</div>
           <CopyButton
@@ -91,9 +92,10 @@ const Account = ({
 <div className="uik-account-selector__select_btn">
 <Button
   fill
-    text={localizedStrings.select}
+    text={isSelected?localizedStrings.selected:localizedStrings.select}
     size='large'
     onClick={onSelect}
+    disabled={isSelected}
     /> 
 </div>
     <button
