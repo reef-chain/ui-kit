@@ -90,13 +90,13 @@ const Account = ({
     </div>
     
 <div className="uik-account-selector__select_btn">
-<Button
+  {!isSelected && <Button
   fill
-    text={isSelected?localizedStrings.selected:localizedStrings.select}
+    text={localizedStrings.select}
     size='large'
     onClick={onSelect}
-    disabled={isSelected}
-    /> 
+    /> }
+
 </div>
     <button
       type="button"
