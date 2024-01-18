@@ -35,7 +35,7 @@ export interface Props {
   className?: string
 }
 
-const AccountSelector = ({
+function AccountSelector({
   isOpen,
   accounts,
   selectedAccount,
@@ -45,9 +45,9 @@ const AccountSelector = ({
   onSelect,
   onNetworkSelect,
   onLanguageSelect,
-  className
-}: Props): JSX.Element => {
-  const wrapper = useRef(null)
+  className}: Props): JSX.Element {
+  
+    const wrapper = useRef(null)
 
   const isSelected = (account: Account): boolean => {
     return !!selectedAccount?.address
