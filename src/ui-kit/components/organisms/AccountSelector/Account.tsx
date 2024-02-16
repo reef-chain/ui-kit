@@ -52,7 +52,8 @@ const Account = ({
     `}
       type="button"
       // onClick={onSelect}
-    >
+      disabled={isSelected}
+  >
       <Identicon
         value={address}
         className="uik-account-selector-account__identicon"
@@ -98,24 +99,23 @@ const Account = ({
           />
         </div>
 
-        {!!evmAddress && isEvmClaimed != false && (
-          <div className="uik-account-selector-account__address">
-            <div>
-              {localizedStrings.reef_evm_address}: {formatAddress(evmAddress)}
-            </div>
-            <CopyButton
-              value={evmAddress}
-              tooltip={localizedStrings.copy_reef_evm}
-              notification={{
-                keepAlive: true,
-                type: "danger",
-                message: localizedStrings.copied_reef_address,
-                children: <Button text={localizedStrings.i_understand} />,
-              }}
-              onClick={(e) => e.stopPropagation()}
-            />
-          </div>
-        )}
+      {
+        !!evmAddress && isEvmClaimed!==false &&
+        <div className='uik-account-selector-account__address'>
+          <div>{localizedStrings.reef_evm_address}: { formatAddress(evmAddress) }</div>
+          <CopyButton
+            value={evmAddress}
+            tooltip={localizedStrings.copy_reef_evm}
+            notification={{
+              keepAlive: true,
+              type: "danger",
+              message:localizedStrings.copied_reef_address,
+              children: <Button text={localizedStrings.i_understand}/>
+            }}
+            onClick={e => e.stopPropagation()}
+          />
+        </div>
+      }
 
         <a
           className="uik-account-selector-account__open-btn"
