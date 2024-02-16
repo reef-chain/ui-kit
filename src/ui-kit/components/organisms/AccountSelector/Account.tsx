@@ -44,15 +44,15 @@ const Account = ({
   const [isEditingName, setEditingName] = useState(false);
 
   return (
-    <button
+    <div
       className={`
       uik-account-selector-account
       ${isSelected ? "uik-account-selector-account--selected" : ""}
       ${className || ""}
     `}
-      type="button"
+      // type="button"
       // onClick={onSelect}
-      disabled={isSelected}
+      // disabled={isSelected}
   >
       <Identicon
         value={address}
@@ -134,6 +134,7 @@ const Account = ({
           text={localizedStrings.select}
           size="large"
           onClick={onSelect}
+          disabled={isSelected}
         />
       </div>
       <button type="button" className="uik-account-selector-account__qr-code">
@@ -178,7 +179,7 @@ const Account = ({
           {localizedStrings.selected}
         </div>
       )}
-    </button>
+    </div>
   );
 };
 
