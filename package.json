@@ -21,6 +21,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:clean": "rm -rf node_modules && rm -f yarn.lock && yarn install && tsc && vite build",
     "showcase": "tsc && vite build --mode=showcase"
   },
   "dependencies": {
