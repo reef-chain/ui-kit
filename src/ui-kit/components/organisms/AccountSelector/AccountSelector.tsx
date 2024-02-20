@@ -141,6 +141,8 @@ const AccountSelector = ({
   const closeAccountImport = () => {
     setImportState(ImportState.NONE);
     setNewName("");
+    setImportSeed("");
+    setImportJson("");
     setSubmittedWithError(false);
     setImportDropdown(false);
   };
