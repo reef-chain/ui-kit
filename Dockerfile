@@ -1,10 +1,10 @@
-FROM ubuntu:18.04 as builder
+FROM debian as builder
 
 # Install any needed packages
 RUN apt-get update && apt-get install -y curl git gnupg
 
 # install nodejs
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 RUN apt-get install -y nodejs build-essential sed
 
 WORKDIR /apps
