@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 
 import Icon from "./../../atoms/Icon";
@@ -24,6 +24,17 @@ import Text from "../../atoms/Text";
 import Form from "../../atoms/Form";
 import Label from "../../atoms/Label";
 import Checkbox from "../../atoms/Checkbox";
+import Tag from "../../atoms/Tag";
+
+export type Wallet = {
+  id: string;
+  name: string;
+  link: string;
+  selected: boolean;
+  installed: boolean;
+  isSnap?: boolean;
+  icon?: JSX.Element;
+};
 
 export type Account = {
   name?: string;
@@ -49,6 +60,7 @@ enum ImportState {
 
 export interface Props {
   isOpen: boolean;
+  availableWallets?: Wallet[];
   accounts?: Account[];
   selectedAccount?: Account | null | undefined;
   selectedNetwork?: Network;
@@ -56,9 +68,10 @@ export interface Props {
   showSnapOptions?: boolean;
   isDefaultWallet?: boolean;
   onClose?: (...args: any[]) => any;
+  onWalletSelect?: (id: string) => any;
   onSelect?: (...args: any[]) => any;
   onRename?: (address: string, newName: string) => any;
-  onExport?: (address: string) => any;
+  onExport?: (address: string, password: string) => any;
   onImport?: (...args: any[]) => any;
   onForget?: (address: string) => any;
   onNetworkSelect?: (network: Network) => any;
@@ -72,12 +85,14 @@ export interface Props {
 
 const AccountSelector = ({
   isOpen,
+  availableWallets,
   accounts,
   selectedAccount,
   availableNetworks,
   selectedNetwork,
   showSnapOptions,
   isDefaultWallet,
+  onWalletSelect,
   onClose,
   onSelect,
   onRename,
@@ -109,17 +124,38 @@ const AccountSelector = ({
   const opened = () => (document.body.style.overflow = "hidden");
   const closed = () => (document.body.style.overflow = "");
 
+  const [isWalletDropdownOpen, setWalletDropdown] = useState(false);
   const [isLanguageDropdownOpen, setLanguageDropdown] = useState(false);
   const [isCreateDropdownOpen, setCreateDropdown] = useState(false);
   const [isImportDropdownOpen, setImportDropdown] = useState(false);
+  const [selectedWallet, setSelectedWallet] = useState<Wallet>();
   const [accountCreationData, setAccountCreationData] =
     useState<AccountCreationData>();
   const [seedSaved, setSeedSaved] = useState(false);
   const [newName, setNewName] = useState("");
+  const [password, setPassword] = useState("");
   const [submittedWithError, setSubmittedWithError] = useState(false);
   const [importState, setImportState] = useState(ImportState.NONE);
   const [importSeed, setImportSeed] = useState("");
   const [importJson, setImportJson] = useState("");
+
+  useEffect(() => {
+    if (availableWallets) {
+      setSelectedWallet(
+        availableWallets.find((wallet) => wallet.selected) ||
+          availableWallets[0]
+      );
+    }
+  }, [availableWallets]);
+
+  const onWalletClick = (wallet: Wallet) => {
+    if (wallet.selected) return;
+    if (!wallet.installed) {
+      window.location.href = wallet.link;
+      return;
+    }
+    onWalletSelect(wallet.id);
+  };
 
   const closeAccountCreation = () => {
     setAccountCreationData(undefined);
@@ -141,6 +177,7 @@ const AccountSelector = ({
   const closeAccountImport = () => {
     setImportState(ImportState.NONE);
     setNewName("");
+    setPassword("");
     setImportSeed("");
     setImportJson("");
     setSubmittedWithError(false);
@@ -148,17 +185,23 @@ const AccountSelector = ({
   };
 
   const onImportClick = () => {
-    if (
-      (importState === ImportState.SEED && !validSeed()) ||
-      (importState === ImportState.JSON && !validJson()) ||
-      !(newName?.length > 2)
-    ) {
-      setSubmittedWithError(true);
-      return;
+    if (importState === ImportState.SEED) {
+      if (!validSeed() || !(newName?.length > 2)) {
+        setSubmittedWithError(true);
+        return;
+      } else {
+        onImport({ name: newName, seed: importSeed });
+        closeAccountImport();
+      }
+    } else if (importState === ImportState.JSON) {
+      if (!validJson() || !password.length) {
+        setSubmittedWithError(true);
+        return;
+      } else {
+        onImport({ json: importJson, password });
+        closeAccountImport();
+      }
     }
-
-    onImport({ name: newName, seed: importSeed, json: importJson });
-    closeAccountImport();
   };
 
   const validSeed = () => {
@@ -197,9 +240,48 @@ const AccountSelector = ({
         <div ref={wrapper} className="uik-account-selector__wrapper">
           <div className="uik-account-selector__content">
             <div className="uik-account-selector__head">
-              <div className="uik-account-selector__title">
-                {strings.select_account}
-              </div>
+              {!!availableWallets &&
+              !!availableWallets.length &&
+              !!onWalletSelect ? (
+                <div className="uik-account-selector__wallet">
+                  <Button
+                    size="large"
+                    fill
+                    onClick={() => setWalletDropdown(true)}
+                  >
+                    <span>{selectedWallet?.name}</span>
+                    {selectedWallet?.icon && selectedWallet.icon}
+                  </Button>
+                  <Dropdown
+                    isOpen={isWalletDropdownOpen}
+                    onClose={() => setWalletDropdown(false)}
+                    position="bottomRight"
+                    className="uik-account-selector__wallet-dropdown"
+                  >
+                    {availableWallets.map((wallet, index) => (
+                      <DropdownItem
+                        key={index}
+                        onClick={() => onWalletClick(wallet)}
+                        className="uik-account-selector__wallet-item"
+                      >
+                        <span>{wallet.name}</span>
+                        {wallet.icon && wallet.icon}
+                        {wallet.selected ? (
+                          <Tag color="green" text={strings.selected} />
+                        ) : wallet.installed ? (
+                          <Tag color="orange" text={strings.select} />
+                        ) : (
+                          <Tag color="red" text={strings.install} />
+                        )}
+                      </DropdownItem>
+                    ))}
+                  </Dropdown>
+                </div>
+              ) : (
+                <div className="uik-account-selector__title">
+                  {strings.select_account}
+                </div>
+              )}
 
               {!!onLanguageSelect && (
                 <div className="uik-account-selector__language">
@@ -257,116 +339,30 @@ const AccountSelector = ({
               </button>
             </div>
 
-            {!!showSnapOptions && (
-              <div className="uik-account-selector__snap-management">
-                {onStartAccountCreation && onConfirmAccountCreation && (
-                  <>
-                    <Button
-                      text={strings.create_account}
-                      size="large"
-                      onClick={() => {
-                        setCreateDropdown(true);
-                        onStartAccountCreation().then(
-                          (data: AccountCreationData) =>
-                            setAccountCreationData(data)
-                        );
-                      }}
-                    />
-                    <Dropdown
-                      isOpen={isCreateDropdownOpen}
-                      onClose={() => closeAccountCreation()}
-                      className="uik-account-selector__create_dropdown"
-                    >
-                      {accountCreationData ? (
-                        <Form>
-                          <Text type="title">{strings.create_account}</Text>
-                          <Input
-                            label={strings.name}
-                            error={
-                              submittedWithError && newName.length < 3
-                                ? strings.error_short_name
-                                : undefined
-                            }
-                            onInput={(e) => setNewName(e.target.value)}
-                          />
-                          <Input
-                            label={strings.native_address}
-                            value={accountCreationData.address}
-                            disabled={true}
-                          />
-                          <Input
-                            label={strings.generated_seed}
-                            textarea
-                            value={accountCreationData.seed}
-                            disabled={true}
-                          />
-                          <div className="uik-account-selector__copy-seed">
-                            <CopyButton
-                              value={accountCreationData.seed}
-                              notification={strings.seed_copied}
-                              tooltip={strings.copy_to_clipboard}
-                            />
-                            <Text type="light">
-                              {strings.copy_to_clipboard}
-                            </Text>
-                          </div>
-                          <div className="uik-account-selector_disclaimer">
-                            <Icon icon={faWarning} />
-                            <Text>{strings.creation_disclaimer}</Text>
-                          </div>
-                          <Checkbox
-                            label={strings.backup_confirmation}
-                            value={seedSaved}
-                            onChange={(e) => setSeedSaved(e)}
-                          ></Checkbox>
-                          <div className="uik-dropdown__dropdown-buttons">
-                            <Button
-                              text={strings.cancel}
-                              onClick={() => closeAccountCreation()}
-                            />
-                            <Button
-                              text={strings.create}
-                              fill
-                              onClick={() => onCreateClick()}
-                            />
-                          </div>
-                        </Form>
-                      ) : (
-                        <Loading />
-                      )}
-                    </Dropdown>
-                  </>
-                )}
-
-                {onImport && (
-                  <>
-                    <Button
-                      text={strings.import_account}
-                      size="large"
-                      onClick={() => setImportDropdown(true)}
-                    />
-                    <Dropdown
-                      isOpen={isImportDropdownOpen}
-                      onClose={() => closeAccountImport()}
-                      className="uik-account-selector__import_dropdown"
-                    >
-                      <Form>
-                        <Text type="title">{strings.import_account}</Text>
-                        {importState === ImportState.NONE ? (
-                          <>
-                            <Button
-                              onClick={() => setImportState(ImportState.SEED)}
-                            >
-                              {strings.from_seed}
-                            </Button>
-                            <Button
-                              onClick={() => setImportState(ImportState.JSON)}
-                            >
-                              {strings.from_json}
-                            </Button>
-                          </>
-                        ) : (
-                          <>
+            {!!showSnapOptions &&
+              (!availableWallets || selectedWallet?.isSnap) && (
+                <div className="uik-account-selector__snap-management">
+                  {onStartAccountCreation && onConfirmAccountCreation && (
+                    <>
+                      <Button
+                        text={strings.create_account}
+                        size="large"
+                        onClick={() => {
+                          setCreateDropdown(true);
+                          onStartAccountCreation().then(
+                            (data: AccountCreationData) =>
+                              setAccountCreationData(data)
+                          );
+                        }}
+                      />
+                      <Dropdown
+                        isOpen={isCreateDropdownOpen}
+                        onClose={() => closeAccountCreation()}
+                        className="uik-account-selector__create_dropdown"
+                      >
+                        {accountCreationData ? (
+                          <Form>
+                            <Text type="title">{strings.create_account}</Text>
                             <Input
                               label={strings.name}
                               error={
@@ -376,74 +372,177 @@ const AccountSelector = ({
                               }
                               onInput={(e) => setNewName(e.target.value)}
                             />
-                            {importState === ImportState.SEED ? (
-                              <Input
-                                label={strings.existing_seed}
-                                textarea
-                                error={
-                                  submittedWithError && !validSeed()
-                                    ? strings.error_seed
-                                    : undefined
-                                }
-                                onInput={(e) => setImportSeed(e.target.value)}
+                            <Input
+                              label={strings.native_address}
+                              value={accountCreationData.address}
+                              disabled={true}
+                            />
+                            <Input
+                              label={strings.generated_seed}
+                              textarea
+                              value={accountCreationData.seed}
+                              disabled={true}
+                            />
+                            <div className="uik-account-selector__copy-seed">
+                              <CopyButton
+                                value={accountCreationData.seed}
+                                notification={strings.seed_copied}
+                                tooltip={strings.copy_to_clipboard}
                               />
-                            ) : (
-                              <>
-                                <Label className="uik-label__tooltip">
-                                  {strings.backup_json}
-                                  <Tooltip text={strings.json_tooltip}>
-                                    <Icon icon={faCircleInfo} />
-                                  </Tooltip>
-                                </Label>
-                                <Input
-                                  textarea
-                                  rows={8}
-                                  error={
-                                    submittedWithError && !validJson()
-                                      ? strings.error_json
-                                      : undefined
-                                  }
-                                  onInput={(e) => setImportJson(e.target.value)}
-                                />
-                              </>
-                            )}
+                              <Text type="light">
+                                {strings.copy_to_clipboard}
+                              </Text>
+                            </div>
+                            <div className="uik-account-selector_disclaimer">
+                              <Icon icon={faWarning} />
+                              <Text>{strings.creation_disclaimer}</Text>
+                            </div>
+                            <Checkbox
+                              label={strings.backup_confirmation}
+                              value={seedSaved}
+                              onChange={(e) => setSeedSaved(e)}
+                            ></Checkbox>
                             <div className="uik-dropdown__dropdown-buttons">
                               <Button
                                 text={strings.cancel}
-                                onClick={() => closeAccountImport()}
+                                onClick={() => closeAccountCreation()}
                               />
                               <Button
-                                text={strings.import}
+                                text={strings.create}
                                 fill
-                                onClick={() => onImportClick()}
+                                onClick={() => onCreateClick()}
                               />
                             </div>
-                          </>
+                          </Form>
+                        ) : (
+                          <Loading />
                         )}
-                      </Form>
-                    </Dropdown>
-                  </>
-                )}
+                      </Dropdown>
+                    </>
+                  )}
 
-                {onUpdateMetadata && !!selectedNetwork && (
-                  <Button
-                    text={strings.update_metadata}
-                    size="large"
-                    onClick={() => onUpdateMetadata(selectedNetwork)}
-                  />
-                )}
+                  {onImport && (
+                    <>
+                      <Button
+                        text={strings.import_account}
+                        size="large"
+                        onClick={() => setImportDropdown(true)}
+                      />
+                      <Dropdown
+                        isOpen={isImportDropdownOpen}
+                        onClose={() => closeAccountImport()}
+                        className="uik-account-selector__import_dropdown"
+                      >
+                        <Form>
+                          <Text type="title">{strings.import_account}</Text>
+                          {importState === ImportState.NONE ? (
+                            <>
+                              <Button
+                                onClick={() => setImportState(ImportState.SEED)}
+                              >
+                                {strings.from_seed}
+                              </Button>
+                              <Button
+                                onClick={() => setImportState(ImportState.JSON)}
+                              >
+                                {strings.from_json}
+                              </Button>
+                            </>
+                          ) : (
+                            <>
+                              {importState === ImportState.SEED ? (
+                                <>
+                                  <Input
+                                    label={strings.name}
+                                    error={
+                                      submittedWithError && newName.length < 3
+                                        ? strings.error_short_name
+                                        : undefined
+                                    }
+                                    onInput={(e) => setNewName(e.target.value)}
+                                  />
+                                  <Input
+                                    label={strings.existing_seed}
+                                    textarea
+                                    error={
+                                      submittedWithError && !validSeed()
+                                        ? strings.error_seed
+                                        : undefined
+                                    }
+                                    onInput={(e) =>
+                                      setImportSeed(e.target.value)
+                                    }
+                                  />
+                                </>
+                              ) : (
+                                <>
+                                  <Label className="uik-label__tooltip">
+                                    {strings.backup_json}
+                                    <Tooltip text={strings.json_tooltip}>
+                                      <Icon icon={faCircleInfo} />
+                                    </Tooltip>
+                                  </Label>
+                                  <Input
+                                    textarea
+                                    rows={8}
+                                    error={
+                                      submittedWithError && !validJson()
+                                        ? strings.error_json
+                                        : undefined
+                                    }
+                                    onInput={(e) =>
+                                      setImportJson(e.target.value)
+                                    }
+                                  />
+                                  <Input
+                                    label={strings.password}
+                                    type="password"
+                                    error={
+                                      submittedWithError && !password.length
+                                        ? strings.error_password_empty
+                                        : undefined
+                                    }
+                                    onInput={(e) => setPassword(e.target.value)}
+                                  />
+                                </>
+                              )}
+                              <div className="uik-dropdown__dropdown-buttons">
+                                <Button
+                                  text={strings.cancel}
+                                  onClick={() => closeAccountImport()}
+                                />
+                                <Button
+                                  text={strings.import}
+                                  fill
+                                  onClick={() => onImportClick()}
+                                />
+                              </div>
+                            </>
+                          )}
+                        </Form>
+                      </Dropdown>
+                    </>
+                  )}
 
-                {onDefaultWalletSelect && (
-                  <div className="uik-account-selector__default-wallet">
-                    <Label>{strings.set_as_default}</Label>
-                    <Toggle
-                      value={isDefaultWallet}
-                      onChange={(e) => onDefaultWalletSelect(e)}
+                  {onUpdateMetadata && !!selectedNetwork && (
+                    <Button
+                      text={strings.update_metadata}
+                      size="large"
+                      onClick={() => onUpdateMetadata(selectedNetwork)}
                     />
-                  </div>
-                )}
-              </div>
-            )}
+                  )}
+
+                  {onDefaultWalletSelect && (
+                    <div className="uik-account-selector__default-wallet">
+                      <Label>{strings.set_as_default}</Label>
+                      <Toggle
+                        value={isDefaultWallet}
+                        onChange={(e) => onDefaultWalletSelect(e)}
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
 
             <div className="uik-account-selector__accounts">
               {!!accounts &&
@@ -464,13 +563,18 @@ const AccountSelector = ({
                         : undefined
                     }
                     onExport={
-                      onExport ? () => onExport(account.address) : undefined
+                      onExport
+                        ? () => onExport(account.address, password)
+                        : undefined
                     }
                     onForget={
                       onForget ? () => onForget(account.address) : undefined
                     }
                     isSelected={isSelected(account)}
-                    showOptions={showSnapOptions}
+                    showOptions={
+                      !!showSnapOptions &&
+                      (!availableWallets || selectedWallet?.isSnap)
+                    }
                   />
                 ))}
             </div>
