@@ -4,7 +4,39 @@ import Uik from "../../ui-kit";
 import {
   AccountCreationData,
   Network,
+  Wallet,
 } from "../../ui-kit/components/organisms/AccountSelector/AccountSelector";
+import MetamaskLogo from "../../ui-kit/components/assets/MetamaskLogo";
+import ReefIcon from "../../ui-kit/components/assets/ReefIcon";
+import ReefSign from "../../ui-kit/components/assets/ReefSign";
+
+const availableWallets: Wallet[] = [
+  {
+    id: "reef",
+    name: "Browser extension",
+    link: "https://chrome.google.com/webstore/detail/reefjs-extension/mjgkpalnahacmhkikiommfiomhjipgjn",
+    selected: true,
+    installed: true,
+    icon: <ReefIcon />,
+  },
+  {
+    id: "reef-snap",
+    name: "MetaMask Snap",
+    link: "local:http://localhost:8080",
+    selected: false,
+    installed: true,
+    icon: <MetamaskLogo />,
+    isSnap: true,
+  },
+  {
+    id: "reef-easy",
+    name: "Easy wallet",
+    link: "local:http://localhost:8080",
+    selected: false,
+    installed: false,
+    icon: <ReefSign />,
+  },
+];
 
 const accounts = [
   {
@@ -30,6 +62,15 @@ function Example() {
   const [selected, setSelected] = useState(accounts[0]);
   const [selectedNetwork, setSelectedNetwork] = useState<Network>("mainnet");
   const [isDefaultWallet, setIsDefaultWallet] = useState(false);
+  const [wallets, setWallets] = useState(availableWallets);
+
+  const selectWallet = (id: string) => {
+    const updatedWallets = wallets.map((wallet: Wallet) => {
+      wallet.selected = wallet.id === id;
+      return wallet;
+    });
+    setWallets(updatedWallets);
+  };
 
   const selectAccount = (account) => {
     setSelected(account);
@@ -61,9 +102,11 @@ function Example() {
       <Uik.AccountSelector
         isOpen={isOpen}
         accounts={accounts}
+        availableWallets={wallets}
         selectedAccount={selected}
         availableNetworks={["mainnet", "testnet"]}
         selectedNetwork={selectedNetwork}
+        onWalletSelect={(id: string) => selectWallet(id)}
         onClose={() => setOpen(false)}
         onSelect={(account) => selectAccount(account)}
         onImport={() => {}}

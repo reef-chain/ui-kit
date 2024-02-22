@@ -78,11 +78,55 @@
         align-items: center;
         position: relative;
 
+        .uik-account-selector__wallet-dropdown .uik-dropdown__dropdown {
+          width: max-content;
+
+          .uik-dropdown__item-text {
+            display: flex;
+            align-items: center;
+            width: 100%;
+
+            img,
+            svg {
+              height: 20px;
+              width: 20px;
+              margin-left: 5px;
+              margin-right: 5px;
+            }
+
+            .uik-tag {
+              margin-left: auto;
+            }
+          }
+        }
+
+        .uik-account-selector__wallet .uik-button__text {
+          display: flex;
+          align-items: center;
+
+          img,
+          svg {
+            height: 20px;
+            width: 20px;
+            margin-left: 5px;
+          }
+        }
+
         .uik-account-selector__title {
           font-size: 1.625rem;
           line-height: 1.2;
           font-weight: 500;
           color: hsla(var(--text--h), var(--text--s), var(--text--l), 0.9);
+          position: relative;
+
+          .uik-tooltip {
+            position: absolute;
+            left: -25px;
+            bottom: 20px;
+          }
+          .metamask-icon {
+            height: 20px;
+          }
         }
 
         .uik-account-selector__network {
@@ -253,6 +297,24 @@
       .uik-account-selector__options {
         align-self: center;
         margin-left: 10px;
+      }
+
+      .uik-account-selector__export_dropdown {
+        .uik-dropdown__dropdown {
+          width: 400px;
+          padding: 20px;
+          top: 60px;
+          text-wrap: wrap;
+        }
+
+        .uik-dropdown__dropdown-buttons {
+          display: flex;
+          justify-content: end;
+
+          .uik-button {
+            margin-left: 10px;
+          }
+        }
       }
 
       .uik-account-selector__accounts {

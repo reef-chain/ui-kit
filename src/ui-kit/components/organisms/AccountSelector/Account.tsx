@@ -9,6 +9,8 @@ import DropdownItem from "../../atoms/Dropdown/DropdownItem";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import Input from "../../atoms/Input";
+import Form from "../../atoms/Form";
+import Text from "../../atoms/Text";
 
 export interface Props {
   name?: string;
@@ -19,7 +21,7 @@ export interface Props {
   showOptions?: boolean;
   onSelect?: (...args: any[]) => any;
   onRename?: (newName: string) => any;
-  onExport?: () => any;
+  onExport?: (password: string) => any;
   onForget?: () => any;
   className?: string;
   isEvmClaimed?: boolean;
@@ -40,8 +42,31 @@ const Account = ({
   className,
 }: Props): JSX.Element => {
   const [isOptionsDropdownOpen, setOptionsDropdown] = useState(false);
+  const [isExportDropdownOpen, setExportDropdown] = useState(false);
   const [newName, setNewName] = useState(name);
   const [isEditingName, setEditingName] = useState(false);
+  const [password, setPassword] = useState("");
+  const [submittedWithError, setSubmittedWithError] = useState(false);
+
+  const openExportDropdown = () => {
+    setExportDropdown(true);
+    setOptionsDropdown(false);
+  }
+
+  const closeExportDropdown = () => {
+    setExportDropdown(false);
+    setPassword("");
+  }
+
+  const onExportClick = () => {
+    if (!password.length) {
+      setSubmittedWithError(true);
+      return;
+    }
+
+    onExport(password);
+    closeExportDropdown();
+  };
 
   return (
     <div
@@ -50,10 +75,7 @@ const Account = ({
       ${isSelected ? "uik-account-selector-account--selected" : ""}
       ${className || ""}
     `}
-      // type="button"
-      // onClick={onSelect}
-      // disabled={isSelected}
-  >
+    >
       <Identicon
         value={address}
         className="uik-account-selector-account__identicon"
@@ -161,7 +183,7 @@ const Account = ({
             {onExport && (
               <DropdownItem
                 text={localizedStrings.export_account}
-                onClick={() => onExport()}
+                onClick={openExportDropdown}
               />
             )}
             {onForget && (
@@ -170,6 +192,36 @@ const Account = ({
                 onClick={() => onForget()}
               />
             )}
+          </Dropdown>
+          <Dropdown
+            isOpen={isExportDropdownOpen}
+            onClose={closeExportDropdown}
+            className="uik-account-selector__export_dropdown"
+          >
+            <Form>
+              <Text type="title">{localizedStrings.export_account}</Text>
+              <Input
+                label={localizedStrings.password_export}
+                type="password"
+                error={
+                  submittedWithError && !password.length
+                    ? localizedStrings.error_password_empty
+                    : undefined
+                }
+                onInput={(e) => setPassword(e.target.value)}
+              />
+              <div className="uik-dropdown__dropdown-buttons">
+                <Button
+                  text={localizedStrings.cancel}
+                  onClick={closeExportDropdown}
+                />
+                <Button
+                  text={localizedStrings.export}
+                  fill
+                  onClick={onExportClick}
+                />
+              </div>
+            </Form>
           </Dropdown>
         </div>
       )}
