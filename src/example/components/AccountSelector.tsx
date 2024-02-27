@@ -6,7 +6,7 @@ import {
   Network,
   Wallet,
 } from "../../ui-kit/components/organisms/AccountSelector/AccountSelector";
-import MetamaskLogo from "../../ui-kit/components/assets/MetamaskLogo";
+import MetaMaskIcon from "./MetaMaskIcon";
 import ReefIcon from "../../ui-kit/components/assets/ReefIcon";
 import ReefSign from "../../ui-kit/components/assets/ReefSign";
 
@@ -25,7 +25,7 @@ const availableWallets: Wallet[] = [
     link: "local:http://localhost:8080",
     selected: false,
     installed: true,
-    icon: <MetamaskLogo />,
+    icon: <MetaMaskIcon />,
     isSnap: true,
   },
   {
@@ -61,7 +61,6 @@ function Example() {
   const [isOpen, setOpen] = useState(false);
   const [selected, setSelected] = useState(accounts[0]);
   const [selectedNetwork, setSelectedNetwork] = useState<Network>("mainnet");
-  const [isDefaultWallet, setIsDefaultWallet] = useState(false);
   const [wallets, setWallets] = useState(availableWallets);
 
   const selectWallet = (id: string) => {
@@ -112,7 +111,6 @@ function Example() {
         onImport={() => {}}
         onNetworkSelect={setSelectedNetwork}
         onLanguageSelect={console.log}
-        onDefaultWalletSelect={(isDefault) => setIsDefaultWallet(isDefault)}
         onUpdateMetadata={(network) =>
           console.log(`Update metadata for ${network}`)
         }
@@ -126,7 +124,6 @@ function Example() {
         onExport={(address) => console.log(`Export account ${address}`)}
         onForget={(address) => console.log(`Forget account ${address}`)}
         showSnapOptions={true}
-        isDefaultWallet={isDefaultWallet}
       />
     </>
   );

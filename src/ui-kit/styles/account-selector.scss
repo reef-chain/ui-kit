@@ -275,23 +275,6 @@
             }
           }
         }
-
-        .uik-account-selector__default-wallet {
-          display: flex;
-          align-items: center;
-          margin: auto;
-
-          .uik-label {
-            position: relative;
-            top: 4px;
-            margin-right: 5px;
-            color: var(--primary);
-          }
-
-          .uik-toggle__toggle {
-            background-color: var(--border-color-dark);
-          }
-        }
       }
 
       .uik-account-selector__options {

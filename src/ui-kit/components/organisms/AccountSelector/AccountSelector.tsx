@@ -15,7 +15,6 @@ import Dropdown from "../../atoms/Dropdown/Dropdown";
 import DropdownItem from "../../atoms/Dropdown/DropdownItem";
 import Button from "../../atoms/Button";
 import { localizedStrings as strings } from "../../../l10n/l10n";
-import Toggle from "../../atoms/Toggle";
 import Input from "../../atoms/Input";
 import Tooltip from "../../atoms/Tooltip";
 import Loading from "../../atoms/Loading";
@@ -66,7 +65,6 @@ export interface Props {
   selectedNetwork?: Network;
   availableNetworks?: Network[];
   showSnapOptions?: boolean;
-  isDefaultWallet?: boolean;
   onClose?: (...args: any[]) => any;
   onWalletSelect?: (id: string) => any;
   onSelect?: (...args: any[]) => any;
@@ -76,7 +74,6 @@ export interface Props {
   onForget?: (address: string) => any;
   onNetworkSelect?: (network: Network) => any;
   onLanguageSelect?: (language: Language) => any;
-  onDefaultWalletSelect?: (isDefault: boolean) => any;
   onUpdateMetadata?: (network: Network) => any;
   onStartAccountCreation?: () => Promise<AccountCreationData>;
   onConfirmAccountCreation?: (seed: string, name: string) => any;
@@ -91,7 +88,6 @@ const AccountSelector = ({
   availableNetworks,
   selectedNetwork,
   showSnapOptions,
-  isDefaultWallet,
   onWalletSelect,
   onClose,
   onSelect,
@@ -101,7 +97,6 @@ const AccountSelector = ({
   onForget,
   onNetworkSelect,
   onLanguageSelect,
-  onDefaultWalletSelect,
   onUpdateMetadata,
   onStartAccountCreation,
   onConfirmAccountCreation,
@@ -530,16 +525,6 @@ const AccountSelector = ({
                       size="large"
                       onClick={() => onUpdateMetadata(selectedNetwork)}
                     />
-                  )}
-
-                  {onDefaultWalletSelect && (
-                    <div className="uik-account-selector__default-wallet">
-                      <Label>{strings.set_as_default}</Label>
-                      <Toggle
-                        value={isDefaultWallet}
-                        onChange={(e) => onDefaultWalletSelect(e)}
-                      />
-                    </div>
                   )}
                 </div>
               )}
