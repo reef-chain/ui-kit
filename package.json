@@ -1,6 +1,6 @@
 {
   "name": "@reef-chain/ui-kit",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "private": false,
   "files": [
     "dist",
@@ -9,6 +9,7 @@
     "LICENSE",
     "README.md"
   ],
+  "repository": "https://github.com/reef-chain/ui-kit",
   "main": "./dist/index.es.js",
   "types": "./dist/ui-kit/index.d.ts",
   "module": "./index.js",
