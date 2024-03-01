@@ -78,7 +78,7 @@
         align-items: center;
         position: relative;
 
-        .uik-account-selector__wallet-dropdown .uik-dropdown__dropdown {
+        .uik-account-selector__extension-dropdown .uik-dropdown__dropdown {
           width: max-content;
 
           .uik-dropdown__item-text {
@@ -100,7 +100,7 @@
           }
         }
 
-        .uik-account-selector__wallet .uik-button__text {
+        .uik-account-selector__extension .uik-button__text {
           display: flex;
           align-items: center;
 
@@ -273,23 +273,6 @@
               color: var(--primary);
               margin-left: 3px;
             }
-          }
-        }
-
-        .uik-account-selector__default-wallet {
-          display: flex;
-          align-items: center;
-          margin: auto;
-
-          .uik-label {
-            position: relative;
-            top: 4px;
-            margin-right: 5px;
-            color: var(--primary);
-          }
-
-          .uik-toggle__toggle {
-            background-color: var(--border-color-dark);
           }
         }
       }

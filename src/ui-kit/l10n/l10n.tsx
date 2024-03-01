@@ -3,7 +3,6 @@ import LocalizedStrings from "react-localization";
 export const localizedStrings = new LocalizedStrings({
   en: {
     select_account: "Select Account",
-    snap_wallet: "Using Reef Chain MetaMask Snap",
     mainnet: "Mainnet",
     testnet: "Testnet",
     choose_language: "Choose Language",
@@ -35,7 +34,6 @@ export const localizedStrings = new LocalizedStrings({
     error_json: "Content must be a valid JSON object",
     error_password_empty: "Password is empty",
     update_metadata: "Update metadata",
-    set_as_default: "Set as default wallet",
     rename: "Rename",
     export_account: "Export account",
     password_export: "Create password for the exported file",
@@ -52,7 +50,6 @@ export const localizedStrings = new LocalizedStrings({
   },
   hi: {
     select_account: "खाता चुनें",
-    snap_wallet: "रीफ चेन मेटामास्क स्नैप का उपयोग कर रहे हैं",
     mainnet: "मुख्य नेट",
     testnet: "परिक्षण नेट",
     choose_language: "भाषा चुनें",
@@ -84,7 +81,6 @@ export const localizedStrings = new LocalizedStrings({
     error_json: "सामग्री एक वैध JSON ऑब्जेक्ट होनी चाहिए",
     error_password_empty: "पासवर्ड खाली है",
     update_metadata: "मेटाडेटा अपडेट करें",
-    set_as_default: "मुख्य वॉलेट के रूप में सेट करें",
     rename: "नाम बदलें",
     export_account: "खाता निर्यात करें",
     password_export: "निर्यात फ़ाइल के लिए पासवर्ड बनाएं",
