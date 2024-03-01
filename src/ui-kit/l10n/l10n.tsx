@@ -3,7 +3,6 @@ import LocalizedStrings from "react-localization";
 export const localizedStrings = new LocalizedStrings({
   en: {
     select_account: "Select Account",
-    snap_wallet: "Using Reef Chain MetaMask Snap",
     mainnet: "Mainnet",
     testnet: "Testnet",
     choose_language: "Choose Language",
@@ -51,7 +50,6 @@ export const localizedStrings = new LocalizedStrings({
   },
   hi: {
     select_account: "खाता चुनें",
-    snap_wallet: "रीफ चेन मेटामास्क स्नैप का उपयोग कर रहे हैं",
     mainnet: "मुख्य नेट",
     testnet: "परिक्षण नेट",
     choose_language: "भाषा चुनें",
