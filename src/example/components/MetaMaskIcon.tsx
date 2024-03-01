@@ -2,7 +2,7 @@ export interface Props {
   className?: string;
 }
 
-const MetamaskLogo = ({ className }: Props): JSX.Element => (
+const MetaMaskIcon = ({ className }: Props): JSX.Element => (
   <svg
     className={`metamask-icon ${className || ""}`}
     xmlns="http://www.w3.org/2000/svg"
@@ -112,4 +112,4 @@ const MetamaskLogo = ({ className }: Props): JSX.Element => (
   </svg>
 );
 
-export default MetamaskLogo;
+export default MetaMaskIcon;

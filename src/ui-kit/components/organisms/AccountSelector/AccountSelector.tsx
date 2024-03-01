@@ -15,7 +15,6 @@ import Dropdown from "../../atoms/Dropdown/Dropdown";
 import DropdownItem from "../../atoms/Dropdown/DropdownItem";
 import Button from "../../atoms/Button";
 import { localizedStrings as strings } from "../../../l10n/l10n";
-import Toggle from "../../atoms/Toggle";
 import Input from "../../atoms/Input";
 import Tooltip from "../../atoms/Tooltip";
 import Loading from "../../atoms/Loading";
@@ -26,9 +25,9 @@ import Label from "../../atoms/Label";
 import Checkbox from "../../atoms/Checkbox";
 import Tag from "../../atoms/Tag";
 
-export type Wallet = {
-  id: string;
+export type Extension = {
   name: string;
+  displayName: string;
   link: string;
   selected: boolean;
   installed: boolean;
@@ -60,15 +59,15 @@ enum ImportState {
 
 export interface Props {
   isOpen: boolean;
-  availableWallets?: Wallet[];
+  availableExtensions?: Extension[];
+  selExtName?: string;
   accounts?: Account[];
   selectedAccount?: Account | null | undefined;
   selectedNetwork?: Network;
   availableNetworks?: Network[];
   showSnapOptions?: boolean;
-  isDefaultWallet?: boolean;
   onClose?: (...args: any[]) => any;
-  onWalletSelect?: (id: string) => any;
+  onExtensionSelect?: (name: string) => any;
   onSelect?: (...args: any[]) => any;
   onRename?: (address: string, newName: string) => any;
   onExport?: (address: string, password: string) => any;
@@ -76,7 +75,6 @@ export interface Props {
   onForget?: (address: string) => any;
   onNetworkSelect?: (network: Network) => any;
   onLanguageSelect?: (language: Language) => any;
-  onDefaultWalletSelect?: (isDefault: boolean) => any;
   onUpdateMetadata?: (network: Network) => any;
   onStartAccountCreation?: () => Promise<AccountCreationData>;
   onConfirmAccountCreation?: (seed: string, name: string) => any;
@@ -85,14 +83,14 @@ export interface Props {
 
 const AccountSelector = ({
   isOpen,
-  availableWallets,
+  availableExtensions,
+  selExtName,
   accounts,
   selectedAccount,
   availableNetworks,
   selectedNetwork,
   showSnapOptions,
-  isDefaultWallet,
-  onWalletSelect,
+  onExtensionSelect,
   onClose,
   onSelect,
   onRename,
@@ -101,7 +99,6 @@ const AccountSelector = ({
   onForget,
   onNetworkSelect,
   onLanguageSelect,
-  onDefaultWalletSelect,
   onUpdateMetadata,
   onStartAccountCreation,
   onConfirmAccountCreation,
@@ -124,11 +121,12 @@ const AccountSelector = ({
   const opened = () => (document.body.style.overflow = "hidden");
   const closed = () => (document.body.style.overflow = "");
 
-  const [isWalletDropdownOpen, setWalletDropdown] = useState(false);
+  const [isExtensionDropdownOpen, setExtensionDropdown] = useState(false);
   const [isLanguageDropdownOpen, setLanguageDropdown] = useState(false);
   const [isCreateDropdownOpen, setCreateDropdown] = useState(false);
   const [isImportDropdownOpen, setImportDropdown] = useState(false);
-  const [selectedWallet, setSelectedWallet] = useState<Wallet>();
+  const [extensions, setExtensions] = useState<Extension[]>();
+  const [selectedExtension, setSelectedExtension] = useState<Extension>();
   const [accountCreationData, setAccountCreationData] =
     useState<AccountCreationData>();
   const [seedSaved, setSeedSaved] = useState(false);
@@ -140,21 +138,28 @@ const AccountSelector = ({
   const [importJson, setImportJson] = useState("");
 
   useEffect(() => {
-    if (availableWallets) {
-      setSelectedWallet(
-        availableWallets.find((wallet) => wallet.selected) ||
-          availableWallets[0]
-      );
+    if (availableExtensions?.length) {
+      const selectedName = selExtName || availableExtensions[0].name;
+      const updatedExtensions = availableExtensions.map((extension) => ({
+        ...extension,
+        selected: extension.name === selectedName,
+      }));
+      const selected = updatedExtensions.find((extension) => extension.selected);
+      setExtensions(updatedExtensions);
+      setSelectedExtension(selected);
+    } else {
+      setExtensions([]);
+      setSelectedExtension(undefined);
     }
-  }, [availableWallets]);
+  }, [availableExtensions, selExtName]);
 
-  const onWalletClick = (wallet: Wallet) => {
-    if (wallet.selected) return;
-    if (!wallet.installed) {
-      window.location.href = wallet.link;
+  const onExtensionClick = (extension: Extension) => {
+    if (extension.selected) return;
+    if (!extension.installed) {
+      window.location.href = extension.link;
       return;
     }
-    onWalletSelect(wallet.id);
+    onExtensionSelect(extension.name);
   };
 
   const closeAccountCreation = () => {
@@ -240,35 +245,35 @@ const AccountSelector = ({
         <div ref={wrapper} className="uik-account-selector__wrapper">
           <div className="uik-account-selector__content">
             <div className="uik-account-selector__head">
-              {!!availableWallets &&
-              !!availableWallets.length &&
-              !!onWalletSelect ? (
-                <div className="uik-account-selector__wallet">
+              {!!extensions &&
+              !!extensions.length &&
+              !!onExtensionSelect ? (
+                <div className="uik-account-selector__extension">
                   <Button
                     size="large"
                     fill
-                    onClick={() => setWalletDropdown(true)}
+                    onClick={() => setExtensionDropdown(true)}
                   >
-                    <span>{selectedWallet?.name}</span>
-                    {selectedWallet?.icon && selectedWallet.icon}
+                    <span>{selectedExtension?.displayName}</span>
+                    {selectedExtension?.icon && selectedExtension.icon}
                   </Button>
                   <Dropdown
-                    isOpen={isWalletDropdownOpen}
-                    onClose={() => setWalletDropdown(false)}
+                    isOpen={isExtensionDropdownOpen}
+                    onClose={() => setExtensionDropdown(false)}
                     position="bottomRight"
-                    className="uik-account-selector__wallet-dropdown"
+                    className="uik-account-selector__extension-dropdown"
                   >
-                    {availableWallets.map((wallet, index) => (
+                    {extensions.map((extension, index) => (
                       <DropdownItem
                         key={index}
-                        onClick={() => onWalletClick(wallet)}
-                        className="uik-account-selector__wallet-item"
+                        onClick={() => onExtensionClick(extension)}
+                        className="uik-account-selector__extension-item"
                       >
-                        <span>{wallet.name}</span>
-                        {wallet.icon && wallet.icon}
-                        {wallet.selected ? (
+                        <span>{extension.displayName}</span>
+                        {extension.icon && extension.icon}
+                        {extension.selected ? (
                           <Tag color="green" text={strings.selected} />
-                        ) : wallet.installed ? (
+                        ) : extension.installed ? (
                           <Tag color="orange" text={strings.select} />
                         ) : (
                           <Tag color="red" text={strings.install} />
@@ -340,7 +345,7 @@ const AccountSelector = ({
             </div>
 
             {!!showSnapOptions &&
-              (!availableWallets || selectedWallet?.isSnap) && (
+              (!extensions || selectedExtension?.isSnap) && (
                 <div className="uik-account-selector__snap-management">
                   {onStartAccountCreation && onConfirmAccountCreation && (
                     <>
@@ -531,16 +536,6 @@ const AccountSelector = ({
                       onClick={() => onUpdateMetadata(selectedNetwork)}
                     />
                   )}
-
-                  {onDefaultWalletSelect && (
-                    <div className="uik-account-selector__default-wallet">
-                      <Label>{strings.set_as_default}</Label>
-                      <Toggle
-                        value={isDefaultWallet}
-                        onChange={(e) => onDefaultWalletSelect(e)}
-                      />
-                    </div>
-                  )}
                 </div>
               )}
 
@@ -573,7 +568,7 @@ const AccountSelector = ({
                     isSelected={isSelected(account)}
                     showOptions={
                       !!showSnapOptions &&
-                      (!availableWallets || selectedWallet?.isSnap)
+                      (!extensions || selectedExtension?.isSnap)
                     }
                   />
                 ))}

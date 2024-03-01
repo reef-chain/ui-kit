@@ -11,6 +11,7 @@ import { useState } from "react";
 import Input from "../../atoms/Input";
 import Form from "../../atoms/Form";
 import Text from "../../atoms/Text";
+import * as util from '@reef-chain/util-lib';
 
 export interface Props {
   name?: string;
@@ -67,7 +68,6 @@ const Account = ({
     onExport(password);
     closeExportDropdown();
   };
-
   return (
     <div
       className={`
@@ -126,7 +126,7 @@ const Account = ({
         <div className='uik-account-selector-account__address'>
           <div>{localizedStrings.reef_evm_address}: { formatAddress(evmAddress) }</div>
           <CopyButton
-            value={evmAddress}
+            value={util.addressUtils.addReefSpecificStringFromAddress(evmAddress)}
             tooltip={localizedStrings.copy_reef_evm}
             notification={{
               keepAlive: true,
