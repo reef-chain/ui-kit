@@ -559,7 +559,7 @@ const AccountSelector = ({
                     }
                     onExport={
                       onExport
-                        ? () => onExport(account.address, password)
+                        ? (exportPassword) => onExport(account.address, exportPassword)
                         : undefined
                     }
                     onForget={

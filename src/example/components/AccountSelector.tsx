@@ -72,7 +72,7 @@ function Example() {
     if (name === "reef") {
       setAvailableAccounts(accounts);
     } else {
-      setAvailableAccounts([]);
+      setAvailableAccounts([accounts[0]]);
     }
   };
 
@@ -127,7 +127,7 @@ function Example() {
         onRename={(address, newName) =>
           console.log(`Rename account ${address} to ${newName}`)
         }
-        onExport={(address) => console.log(`Export account ${address}`)}
+        onExport={(address, password) => console.log(`Export account ${address} with password ${password}`)}
         onForget={(address) => console.log(`Forget account ${address}`)}
         showSnapOptions={true}
       />
