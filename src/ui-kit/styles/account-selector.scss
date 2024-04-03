@@ -29,7 +29,7 @@
         opacity: 0;
       }
     }
-  
+
     &.enter-active,
     &.enter-done,
     &.exit {
@@ -42,7 +42,7 @@
         transform: none;
       }
     }
-  
+
     &.exit-active {
       transform: translateY(-100%);
 
@@ -78,16 +78,55 @@
         align-items: center;
         position: relative;
 
+        .uik-account-selector__extension-dropdown .uik-dropdown__dropdown {
+          width: max-content;
+
+          .uik-dropdown__item-text {
+            display: flex;
+            align-items: center;
+            width: 100%;
+
+            img,
+            svg {
+              height: 20px;
+              width: 20px;
+              margin-left: 5px;
+              margin-right: 5px;
+            }
+
+            .uik-tag {
+              margin-left: auto;
+            }
+          }
+        }
+
+        .uik-account-selector__extension .uik-button__text {
+          display: flex;
+          align-items: center;
+
+          img,
+          svg {
+            height: 20px;
+            width: 20px;
+            margin-left: 5px;
+          }
+        }
+
         .uik-account-selector__title {
           font-size: 1.625rem;
           line-height: 1.2;
           font-weight: 500;
-          color: hsla(
-            var(--text--h),
-            var(--text--s),
-            var(--text--l),
-            0.9
-          );
+          color: hsla(var(--text--h), var(--text--s), var(--text--l), 0.9);
+          position: relative;
+
+          .uik-tooltip {
+            position: absolute;
+            left: -25px;
+            bottom: 20px;
+          }
+          .metamask-icon {
+            height: 20px;
+          }
         }
 
         .uik-account-selector__network {
@@ -110,7 +149,7 @@
           display: flex;
           align-items: center;
         }
-        .uik-account-selector__language_dropdown_av{
+        .uik-account-selector__language_dropdown_av {
           position: relative;
           top: 25px;
           left: -74px;
@@ -131,21 +170,132 @@
           transition: all 0.125s;
           color: var(--text-light);
           box-shadow: var(--neomorph-out);
-          
+
           .uik-modal__close-btn-icon {
             width: 14px;
             height: 22px;
           }
-          
+
           &:hover {
             color: var(--primary);
             cursor: pointer;
             box-shadow: var(--neomorph-out-light), var(--neomorph-in-light);
           }
-      
+
           &:active {
             color: var(--primary);
             box-shadow: var(--neomorph-out-light), var(--neomorph-in);
+          }
+        }
+      }
+
+      .uik-account-selector__snap-management {
+        margin-top: 20px;
+        display: flex;
+
+        > .uik-button {
+          margin-right: 10px;
+        }
+
+        .uik-account-selector__create_dropdown {
+          .uik-dropdown__dropdown {
+            width: 400px;
+            min-height: 400px;
+            padding: 20px;
+            top: 60px;
+            text-wrap: wrap;
+
+            .uik-account-selector__copy-seed {
+              display: flex;
+              margin-top: 5px;
+
+              .uik-text {
+                font-size: 0.8rem;
+                margin-left: 5px;
+              }
+            }
+
+            .uik-account-selector_disclaimer {
+              display: flex;
+
+              .uik-icon {
+                color: var(--primary);
+                margin-right: 15px;
+              }
+
+              .uik-text {
+                font-size: 0.8rem;
+              }
+            }
+
+            .uik-input__input:disabled {
+              color: var(--text-light);
+            }
+
+            .uik-dropdown__dropdown-buttons {
+              display: flex;
+              justify-content: end;
+
+              .uik-button {
+                margin-left: 10px;
+              }
+            }
+
+            .uik-loading {
+              margin: auto;
+            }
+          }
+        }
+
+        .uik-account-selector__import_dropdown {
+          .uik-dropdown__dropdown {
+            width: 400px;
+            padding: 20px;
+            top: 60px;
+            text-wrap: wrap;
+          }
+
+          .uik-dropdown__dropdown-buttons {
+            display: flex;
+            justify-content: end;
+
+            .uik-button {
+              margin-left: 10px;
+            }
+          }
+
+          .uik-label__tooltip {
+            display: flex;
+            margin-bottom: 0;
+
+            .uik-icon {
+              height: 1rem;
+              color: var(--primary);
+              margin-left: 3px;
+            }
+          }
+        }
+      }
+
+      .uik-account-selector__options {
+        align-self: center;
+        margin-left: 10px;
+      }
+
+      .uik-account-selector__export_dropdown {
+        .uik-dropdown__dropdown {
+          width: 400px;
+          padding: 20px;
+          top: 60px;
+          text-wrap: wrap;
+        }
+
+        .uik-dropdown__dropdown-buttons {
+          display: flex;
+          justify-content: end;
+
+          .uik-button {
+            margin-left: 10px;
           }
         }
       }
@@ -220,7 +370,7 @@
         margin: 0 10px;
         white-space: nowrap;
       }
-      
+
       & + .uik-account-selector-account__address {
         margin-top: 6px;
       }
@@ -230,12 +380,7 @@
       font-size: 0.813rem;
       line-height: 1.2;
       font-weight: 500;
-      color: hsla(
-        var(--text--h),
-        var(--text--s),
-        var(--text--l),
-        0.65
-      );
+      color: hsla(var(--text--h), var(--text--s), var(--text--l), 0.65);
       text-align: left;
       display: flex;
       flex-flow: row nowrap;
@@ -274,35 +419,27 @@
       --size: 66px;
     }
   }
-  
+
   &:hover {
-    cursor: pointer;
+    // cursor: pointer;
     box-shadow: var(--neomorph-out-light),
-    inset 7.5px 7.5px 15px -3.75px hsl(
-      var(--bg--h),
-      var(--bg--s),
-      calc(var(--bg--l) - 7.5%)
-    ),
-    inset -7.5px -7.5px 15px -3.75px hsl(
-      var(--bg--h),
-      var(--bg--s),
-      calc(var(--bg--l) + 7.5%)
-    );
+      inset 7.5px 7.5px 15px -3.75px hsl(var(--bg--h), var(--bg--s), calc(var(
+                --bg--l
+              ) - 7.5%)),
+      inset -7.5px -7.5px 15px -3.75px hsl(var(--bg--h), var(--bg--s), calc(var(
+                --bg--l
+              ) + 7.5%));
   }
 
   &:active {
     cursor: pointer;
     box-shadow: var(--neomorph-out-light),
-    inset 10px 10px 20px -5px hsl(
-      var(--bg--h),
-      var(--bg--s),
-      calc(var(--bg--l) - 10%)
-    ),
-    inset -10px -10px 20px -5px hsl(
-      var(--bg--h),
-      var(--bg--s),
-      calc(var(--bg--l) + 10%)
-    );
+      inset 10px 10px 20px -5px hsl(var(--bg--h), var(--bg--s), calc(var(
+                --bg--l
+              ) - 10%)),
+      inset -10px -10px 20px -5px hsl(var(--bg--h), var(--bg--s), calc(var(
+                --bg--l
+              ) + 10%));
   }
 
   &--selected {
@@ -317,8 +454,10 @@
     }
 
     $borderWidth: 3px;
-    
-    &, &:hover, &:active {
+
+    &,
+    &:hover,
+    &:active {
       box-shadow: 0 10px 25px -15px rgba(#742cb2, 0.5);
     }
 
