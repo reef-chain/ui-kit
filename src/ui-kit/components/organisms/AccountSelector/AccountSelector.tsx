@@ -103,7 +103,7 @@ function AccountSelector({
   onStartAccountCreation,
   onConfirmAccountCreation,
   className,
-}: Props): JSX.Element => {
+}: Props): JSX.Element {
   const wrapper = useRef(null);
 
   const isSelected = (account: Account): boolean => {
