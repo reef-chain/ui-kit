@@ -3,6 +3,8 @@ import { CSSTransition } from "react-transition-group";
 
 import Icon from "./../../atoms/Icon";
 import {
+  faChevronDown,
+  faChevronUp,
   faCircleInfo,
   faGlobe,
   faWarning,
@@ -33,6 +35,8 @@ export type Extension = {
   installed: boolean;
   isSnap?: boolean;
   icon?: JSX.Element;
+  chromeExtensionLink?: string;
+  firefoxExtensionLink?: string;
 };
 
 export type Account = {
@@ -254,6 +258,9 @@ const AccountSelector = ({
                     fill
                     onClick={() => setExtensionDropdown(true)}
                   >
+                    <Icon className="uik-account-selector__chevron"
+                      icon={isExtensionDropdownOpen ? faChevronUp : faChevronDown} 
+                    />
                     <span>{selectedExtension?.displayName}</span>
                     {selectedExtension?.icon && selectedExtension.icon}
                   </Button>
@@ -271,12 +278,8 @@ const AccountSelector = ({
                       >
                         <span>{extension.displayName}</span>
                         {extension.icon && extension.icon}
-                        {extension.selected ? (
+                        {extension.selected && (
                           <Tag color="green" text={strings.selected} />
-                        ) : extension.installed ? (
-                          <Tag color="orange" text={strings.select} />
-                        ) : (
-                          <Tag color="red" text={strings.install} />
                         )}
                       </DropdownItem>
                     ))}
