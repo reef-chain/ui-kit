@@ -318,6 +318,20 @@
             margin-top: 40px;
           }
         }
+
+        .uik-account-selector__no-accounts {
+          width: 100%;
+          text-align: center;
+          color: hsla(var(--text--h), var(--text--s), var(--text--l), 0.65);
+          .subtitle {
+            font-size: 1.2rem;
+            font-weight: 600;
+          }
+          .uik-account-selector__wallet-link {
+            color: var(--primary);
+            text-decoration: none;          
+          }
+        }
       }
     }
   }

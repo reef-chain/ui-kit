@@ -6,7 +6,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 export interface Props {
   title?: string,
   isOpen: boolean,
-  onClose: (...args: any[]) => any,
+  onClose?: (...args: any[]) => any,
   onOpened?: (...args: any[]) => any,
   onClosed?: (...args: any[]) => any,
   className?: string,
@@ -47,9 +47,11 @@ const Modal = ({
             <div className='uik-modal__popup'>
                 <div className='uik-modal__head'>
                     <div className='uik-modal__title'>{ title }</div>
-                    <button className='uik-modal__close-btn' onClick={onClose}>
-                        <Icon className='uik-modal__close-btn-icon' icon={faXmark}/>
-                    </button>
+                    { onClose &&
+                      <button className='uik-modal__close-btn' onClick={onClose}>
+                          <Icon className='uik-modal__close-btn-icon' icon={faXmark}/>
+                      </button>
+                    }
                 </div>
     
                 <div className='uik-modal__body'>{ children }</div>
