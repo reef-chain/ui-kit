@@ -159,10 +159,6 @@ const AccountSelector = ({
 
   const onExtensionClick = (extension: Extension) => {
     if (extension.selected) return;
-    if (!extension.installed) {
-      window.location.href = extension.link;
-      return;
-    }
     onExtensionSelect(extension.name);
   };
 
@@ -229,6 +225,17 @@ const AccountSelector = ({
       return false;
     }
   };
+
+  const getExtensionLink = (extension: Extension) => {
+    const isFirefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
+    if (isFirefox && extension.firefoxExtensionLink) {
+      return extension.firefoxExtensionLink;
+    } else if (extension.chromeExtensionLink) {
+      return extension.chromeExtensionLink;
+    } else {
+      return extension.link;
+    }
+  }
 
   return (
     <div
@@ -544,7 +551,7 @@ const AccountSelector = ({
 
             <div className="uik-account-selector__accounts">
               {!!accounts &&
-                !!accounts.length &&
+                !!accounts.length ?
                 accounts.map((account, index) => (
                   <AccountComponent
                     key={index}
@@ -574,7 +581,38 @@ const AccountSelector = ({
                       (!extensions || selectedExtension?.isSnap)
                     }
                   />
-                ))}
+                )) : 
+                <div className="uik-account-selector__no-accounts">
+                  {selectedExtension?.installed ? (
+                    <>
+                      <div className="subtitle">
+                        {strings.no_accounts}
+                      </div>
+                      <div>
+                        {strings.use_reef_chain_extension}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="subtitle">
+                        {strings.no_wallet}
+                      </div>
+                      {selectedExtension?.displayName && (
+                        <div>
+                          <span>{strings.install_wallet.split("{LINK}")[0]}</span>
+                          <a
+                            href={getExtensionLink(selectedExtension)}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="uik-account-selector__wallet-link"
+                          >{selectedExtension.displayName}</a>
+                          <span>{strings.install_wallet.split("{LINK}")[1]}</span>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              }
             </div>
           </div>
         </div>

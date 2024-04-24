@@ -22,7 +22,7 @@ const availableExtensions: Extension[] = [
   {
     name: "reef-snap",
     displayName: "MetaMask Snap",
-    link: "local:http://localhost:8080",
+    link: "https://app.reef.io/snap",
     selected: false,
     installed: true,
     icon: <MetaMaskIcon />,
@@ -31,7 +31,7 @@ const availableExtensions: Extension[] = [
   {
     name: "reef-easy",
     displayName: "Easy wallet",
-    link: "local:http://localhost:8080",
+    link: "http://localhost:8080",
     selected: false,
     installed: false,
     icon: <ReefSign />,
@@ -72,7 +72,7 @@ function Example() {
     if (name === "reef") {
       setAvailableAccounts(accounts);
     } else {
-      setAvailableAccounts([accounts[0]]);
+      setAvailableAccounts([]);
     }
   };
 
