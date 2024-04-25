@@ -53,7 +53,7 @@ yarn link
 
 3. Go to project's UI Kit package
 ```
-cd node_modules/@reef-defi/ui-kit
+cd node_modules/@reef-chain/ui-kit
 ```
 
 4. Link React
