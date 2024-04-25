@@ -144,12 +144,11 @@ const AccountSelector = ({
   useEffect(() => {
     if (availableExtensions?.length) {
       const selectedName = selExtName || availableExtensions[0].name;
-      const updatedExtensions = availableExtensions.map((extension) => ({
-        ...extension,
-        selected: extension.name === selectedName,
-      }));
-      const selected = updatedExtensions.find((extension) => extension.selected);
-      setExtensions(updatedExtensions);
+      availableExtensions.forEach((extension) => {
+        extension.selected = extension.name === selectedName;
+      });
+      const selected = availableExtensions.find((extension) => extension.selected);
+      setExtensions(availableExtensions);
       setSelectedExtension(selected);
     } else {
       setExtensions([]);
