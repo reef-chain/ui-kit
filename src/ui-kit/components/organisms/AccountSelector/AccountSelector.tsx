@@ -85,7 +85,7 @@ export interface Props {
   className?: string;
 }
 
-const AccountSelector = ({
+function AccountSelector({
   isOpen,
   availableExtensions,
   selExtName,
@@ -107,7 +107,7 @@ const AccountSelector = ({
   onStartAccountCreation,
   onConfirmAccountCreation,
   className,
-}: Props): JSX.Element => {
+}: Props): JSX.Element {
   const wrapper = useRef(null);
 
   const isSelected = (account: Account): boolean => {
