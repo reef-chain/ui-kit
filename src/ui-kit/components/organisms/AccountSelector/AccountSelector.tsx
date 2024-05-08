@@ -3,6 +3,8 @@ import { CSSTransition } from "react-transition-group";
 
 import Icon from "./../../atoms/Icon";
 import {
+  faChevronDown,
+  faChevronUp,
   faCircleInfo,
   faGlobe,
   faWarning,
@@ -33,6 +35,8 @@ export type Extension = {
   installed: boolean;
   isSnap?: boolean;
   icon?: JSX.Element;
+  chromeExtensionLink?: string;
+  firefoxExtensionLink?: string;
 };
 
 export type Account = {
@@ -140,12 +144,11 @@ function AccountSelector({
   useEffect(() => {
     if (availableExtensions?.length) {
       const selectedName = selExtName || availableExtensions[0].name;
-      const updatedExtensions = availableExtensions.map((extension) => ({
-        ...extension,
-        selected: extension.name === selectedName,
-      }));
-      const selected = updatedExtensions.find((extension) => extension.selected);
-      setExtensions(updatedExtensions);
+      availableExtensions.forEach((extension) => {
+        extension.selected = extension.name === selectedName;
+      });
+      const selected = availableExtensions.find((extension) => extension.selected);
+      setExtensions(availableExtensions);
       setSelectedExtension(selected);
     } else {
       setExtensions([]);
@@ -155,10 +158,6 @@ function AccountSelector({
 
   const onExtensionClick = (extension: Extension) => {
     if (extension.selected) return;
-    if (!extension.installed) {
-      window.location.href = extension.link;
-      return;
-    }
     onExtensionSelect(extension.name);
   };
 
@@ -226,6 +225,17 @@ function AccountSelector({
     }
   };
 
+  const getExtensionLink = (extension: Extension) => {
+    const isFirefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
+    if (isFirefox && extension.firefoxExtensionLink) {
+      return extension.firefoxExtensionLink;
+    } else if (extension.chromeExtensionLink) {
+      return extension.chromeExtensionLink;
+    } else {
+      return extension.link;
+    }
+  }
+
   return (
     <div
       className={`
@@ -254,6 +264,9 @@ function AccountSelector({
                     fill
                     onClick={() => setExtensionDropdown(true)}
                   >
+                    <Icon className="uik-account-selector__chevron"
+                      icon={isExtensionDropdownOpen ? faChevronUp : faChevronDown} 
+                    />
                     <span>{selectedExtension?.displayName}</span>
                     {selectedExtension?.icon && selectedExtension.icon}
                   </Button>
@@ -271,12 +284,8 @@ function AccountSelector({
                       >
                         <span>{extension.displayName}</span>
                         {extension.icon && extension.icon}
-                        {extension.selected ? (
+                        {extension.selected && (
                           <Tag color="green" text={strings.selected} />
-                        ) : extension.installed ? (
-                          <Tag color="orange" text={strings.select} />
-                        ) : (
-                          <Tag color="red" text={strings.install} />
                         )}
                       </DropdownItem>
                     ))}
@@ -541,7 +550,7 @@ function AccountSelector({
 
             <div className="uik-account-selector__accounts">
               {!!accounts &&
-                !!accounts.length &&
+                !!accounts.length ?
                 accounts.map((account, index) => (
                   <AccountComponent
                     key={index}
@@ -571,7 +580,38 @@ function AccountSelector({
                       (!extensions || selectedExtension?.isSnap)
                     }
                   />
-                ))}
+                )) : 
+                <div className="uik-account-selector__no-accounts">
+                  {selectedExtension?.installed ? (
+                    <>
+                      <div className="subtitle">
+                        {strings.no_accounts}
+                      </div>
+                      <div>
+                        {strings.use_reef_chain_extension}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="subtitle">
+                        {strings.no_wallet}
+                      </div>
+                      {selectedExtension?.displayName && (
+                        <div>
+                          <span>{strings.install_wallet.split("{LINK}")[0]}</span>
+                          <a
+                            href={getExtensionLink(selectedExtension)}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="uik-account-selector__wallet-link"
+                          >{selectedExtension.displayName}</a>
+                          <span>{strings.install_wallet.split("{LINK}")[1]}</span>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              }
             </div>
           </div>
         </div>

@@ -112,6 +112,11 @@
           }
         }
 
+        .uik-account-selector__chevron {
+          height: 15px !important;
+          margin: 0 5px 0 0 !important;
+        }
+
         .uik-account-selector__title {
           font-size: 1.625rem;
           line-height: 1.2;
@@ -311,6 +316,20 @@
         .uik-account-selector__account {
           & + .uik-account-selector__account {
             margin-top: 40px;
+          }
+        }
+
+        .uik-account-selector__no-accounts {
+          width: 100%;
+          text-align: center;
+          color: hsla(var(--text--h), var(--text--s), var(--text--l), 0.65);
+          .subtitle {
+            font-size: 1.2rem;
+            font-weight: 600;
+          }
+          .uik-account-selector__wallet-link {
+            color: var(--primary);
+            text-decoration: none;          
           }
         }
       }
