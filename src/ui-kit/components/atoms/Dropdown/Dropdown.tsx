@@ -7,12 +7,14 @@ export interface Props {
   onClose: (...args: any[]) => any,
   position?: "top" | "bottomRight" | "bottomLeft" | "topRight" | "topLeft",
   className?: string,
+  isDarkMode?:boolean,
   children?: any
 }
 
 const Dropdown = ({
   isOpen,
   stayOpen,
+  isDarkMode,
   onClose,
   position,
   children,
@@ -51,14 +53,14 @@ const Dropdown = ({
     >
       <CSSTransition
         in={isOpen}
-        className='uik-dropdown__dropdown'
+        className={`uik-dropdown__dropdown ${isDarkMode?'dark':''}`}
         nodeRef={dropdown}
         timeout={150}
         unmountOnExit
       >
         <div
           ref={dropdown}
-          className='uik-dropdown__dropdown'
+          className={`uik-dropdown__dropdown ${isDarkMode?'dark':''}`}
         >
           { getChildren }
         </div>

@@ -3,6 +3,7 @@ import Icon from './../Icon';
 export interface Props {
   text?: string,
   icon?: any,
+  isDarkMode?:boolean,
   onClick?: (...args: any[]) => any,
   className?: string,
   children?: any
@@ -12,6 +13,7 @@ const DropdownItem = ({
   text,
   icon,
   onClick,
+  isDarkMode,
   children,
   className
 }: Props): JSX.Element => (
@@ -32,7 +34,7 @@ const DropdownItem = ({
         />
       </div>
     }
-    <span className="uik-dropdown__item-text">{children}{text}</span>
+    <span className={`uik-dropdown__item-text ${isDarkMode?'dark':''}`}>{children}{text}</span>
   </button>
 );
 
