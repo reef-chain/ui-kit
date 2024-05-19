@@ -24,6 +24,15 @@
     padding: 8px;
     margin: 4px 0;
 
+    &.dark{
+      background: #38393f;
+      color: white ;
+
+      &:hover{
+        color: black;
+      }
+    }
+
     &.enter {
       opacity: 0;
       transform: scale(0.8);
@@ -83,11 +92,19 @@
         font-weight: 600;
         color: var(--text);
         user-select: none;
+
+        &.dark{
+          color: white;
+          &:hover{
+            color: black!important;
+          }
+        }
       }
 
-      &:hover {
+      &:hover  {
         transition: none;
         background-color: var(--border-color-light);
+        color: black!important;
         cursor: pointer;
 
         .uik-dropdown__item-icon {
@@ -96,7 +113,7 @@
           }
         }
       }
-      
+
       &:active {
         background-color: var(--border-color);
       }
