@@ -10,7 +10,7 @@ import {
   faWarning,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-
+import "./index.css";
 import AccountComponent from "./Account";
 import Tabs from "../../atoms/Tabs";
 import Dropdown from "../../atoms/Dropdown/Dropdown";
@@ -282,8 +282,10 @@ function AccountSelector({
                         onClick={() => onExtensionClick(extension)}
                         className="uik-account-selector__extension-item"
                       >
-                        <span>{extension.displayName}</span>
+                        <div className="extension-icon">
                         {extension.icon && extension.icon}
+                        </div>
+                        <span>{extension.displayName}</span>
                         {extension.selected && (
                           <Tag color="green" text={strings.selected} />
                         )}
