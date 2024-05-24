@@ -550,10 +550,12 @@ function AccountSelector({
                 </div>
               )}
 
-            <div className="uik-account-selector__accounts">
-              {!!accounts &&
-                !!accounts.length ?
-                accounts.map((account, index) => (
+<div className="uik-account-selector__accounts">
+
+{!!accounts &&
+                !!accounts.length &&
+                accounts.map((account, index) => {return (
+                  !isSelected(account)?<></>:
                   <AccountComponent
                     key={index}
                     className="uik-account-selector__account"
@@ -582,7 +584,42 @@ function AccountSelector({
                       (!extensions || selectedExtension?.isSnap)
                     }
                   />
-                )) : 
+                )})}
+                </div>
+            <div className="uik-account-selector__accounts">
+              {!!accounts &&
+                !!accounts.length ?
+                accounts.map((account, index) => {return (
+                  isSelected(account)?<></>:
+                  <AccountComponent
+                    key={index}
+                    className="uik-account-selector__account"
+                    name={account.name}
+                    address={account.address}
+                    evmAddress={account.evmAddress}
+                    source={account.source}
+                    isEvmClaimed={account.isEvmClaimed}
+                    onSelect={() => select(account)}
+                    onRename={
+                      onRename
+                        ? (newName) => onRename(account.address, newName)
+                        : undefined
+                    }
+                    onExport={
+                      onExport
+                        ? (exportPassword) => onExport(account.address, exportPassword)
+                        : undefined
+                    }
+                    onForget={
+                      onForget ? () => onForget(account.address) : undefined
+                    }
+                    isSelected={isSelected(account)}
+                    showOptions={
+                      !!showSnapOptions &&
+                      (!extensions || selectedExtension?.isSnap)
+                    }
+                  />
+                )}) : 
                 <div className="uik-account-selector__no-accounts">
                   {selectedExtension?.installed ? (
                     <>
