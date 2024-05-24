@@ -31,7 +31,7 @@ const availableExtensions: Extension[] = [
   {
     name: "reef-easy",
     displayName: "Easy wallet",
-    link: "http://localhost:8080",
+    link: "https://chromewebstore.google.com/detail/reef-easy-social-account/dicnbkmjoihaadhfnjclmpnmpciokngm",
     selected: false,
     installed: false,
     icon: <ReefSign />,
@@ -68,7 +68,7 @@ function Example() {
 
   const selectExtension = (name: string) => {
     setSelectedExtensionName(name);
-    
+
     if (name === "reef") {
       setAvailableAccounts(accounts);
     } else {
