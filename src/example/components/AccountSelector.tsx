@@ -9,6 +9,7 @@ import {
 import MetaMaskIcon from "./MetaMaskIcon";
 import ReefIcon from "../../ui-kit/components/assets/ReefIcon";
 import ReefSign from "../../ui-kit/components/assets/ReefSign";
+import { WalletConnectLogo } from "../../ui-kit/components/assets/WalletConnect";
 
 const availableExtensions: Extension[] = [
   {
@@ -36,6 +37,14 @@ const availableExtensions: Extension[] = [
     installed: false,
     icon: <ReefSign />,
   },
+ {
+    name: "reef-wallet-connect",
+    displayName: "Mobile App",
+    link: "https://x.com/Reef_Chain/status/1775160377703064053",
+    selected: false,
+    installed: false,
+    icon: <WalletConnectLogo />
+},
 ];
 
 const accounts = [
