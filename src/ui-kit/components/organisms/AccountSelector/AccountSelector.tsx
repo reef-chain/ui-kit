@@ -7,6 +7,7 @@ import {
   faChevronUp,
   faCircleInfo,
   faGlobe,
+  faQrcode,
   faWarning,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
@@ -82,6 +83,7 @@ export interface Props {
   onUpdateMetadata?: (network: Network) => any;
   onStartAccountCreation?: () => Promise<AccountCreationData>;
   onConfirmAccountCreation?: (seed: string, name: string) => any;
+  handleWalletConnect?:()=>Promise<void>;
   className?: string;
 }
 
@@ -106,6 +108,7 @@ function AccountSelector({
   onUpdateMetadata,
   onStartAccountCreation,
   onConfirmAccountCreation,
+  handleWalletConnect,
   className,
 }: Props): JSX.Element {
   const wrapper = useRef(null);
@@ -645,6 +648,10 @@ function AccountSelector({
                             className="uik-account-selector__wallet-link"
                           >{selectedExtension.displayName}</a>
                           <span>{strings.install_wallet.split("{LINK}")[1]}</span>
+                          {selectedExtension.name==="reef-wallet-connect" && handleWalletConnect?
+                          <div className="uik-account-selector__wallet-connect-btn">
+                            <Button text="Open QR Code" onClick={handleWalletConnect} icon={faQrcode} fill/>
+                            </div>:""}
                         </div>
                       )}
                     </>
