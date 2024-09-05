@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
+import { BigNumber } from "ethers";
 
 import Icon from "./../../atoms/Icon";
 import {
@@ -46,6 +47,8 @@ export type Account = {
   evmAddress?: string;
   source?: string;
   isEvmClaimed?: boolean;
+  lockedBalance?:BigNumber;
+  freeBalance?:BigNumber;
 };
 
 export type Network = "mainnet" | "testnet";
@@ -566,6 +569,8 @@ function AccountSelector({
                     address={account.address}
                     evmAddress={account.evmAddress}
                     source={account.source}
+                    lockedBalance={account.lockedBalance}
+                    freeBalance={account.freeBalance}
                     isEvmClaimed={account.isEvmClaimed}
                     onSelect={() => select(account)}
                     onRename={
@@ -602,6 +607,8 @@ function AccountSelector({
                     evmAddress={account.evmAddress}
                     source={account.source}
                     isEvmClaimed={account.isEvmClaimed}
+                    lockedBalance={account.lockedBalance}
+                    freeBalance={account.freeBalance}
                     onSelect={() => select(account)}
                     onRename={
                       onRename

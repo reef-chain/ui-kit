@@ -10,6 +10,7 @@ import MetaMaskIcon from "./MetaMaskIcon";
 import ReefIcon from "../../ui-kit/components/assets/ReefIcon";
 import ReefSign from "../../ui-kit/components/assets/ReefSign";
 import { WalletConnectLogo } from "../../ui-kit/components/assets/WalletConnect";
+import {BigNumber} from "ethers";
 
 const availableExtensions: Extension[] = [
   {
@@ -52,6 +53,8 @@ const accounts = [
     name: "Test Account 1",
     address: "5CSJtNRJHEazGS4xs5PvmRddTb5xGSwLkhQcs7KAyHAdshpY",
     evmAddress: "0x8Cc9EB01a8B68696768dB0b8D5C6dDF8dE467523",
+    freeBalance: BigNumber.from("0x0d0a800fbbfc34d69740"),
+    lockedBalance: BigNumber.from("0x00"),
   },
   {
     name: "Test Account 2",
@@ -148,7 +151,7 @@ const code = `const accounts = [
   {
     name: "Test Account 1",
     address: "5CSJtNRJHEazGS4xs5PvmRddTb5xGSwLkhQcs7KAyHAdshpY",
-    evmAddress: "0x8Cc9EB01a8B68696768dB0b8D5C6dDF8dE467523"
+    evmAddress: "0x8Cc9EB01a8B68696768dB0b8D5C6dDF8dE467523",
   },
   {
     name: "Test Account 2",

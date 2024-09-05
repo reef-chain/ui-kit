@@ -2,3 +2,13 @@
     display: flex;
     padding-right: 4px;
 }
+
+.uik-account-selector-account__balance{
+    display: flex;
+}
+
+.uik-account-selector-account__balance-icon{
+    width: 1rem;
+    margin-left: 0.5rem;
+    margin-right: 0.2rem;
+}
