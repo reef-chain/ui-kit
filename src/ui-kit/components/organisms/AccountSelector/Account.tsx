@@ -1,5 +1,5 @@
 import Identicon from "@polkadot/react-identicon";
-import { formatAddress } from "../../../utils/format";
+import { formatAddress, formatHumanAmount } from "../../../utils/format";
 import CopyButton from "../CopyButton";
 import Button from "../../atoms/Button";
 import QRCode from "../../atoms/QRCode";
@@ -12,6 +12,7 @@ import Input from "../../atoms/Input";
 import Form from "../../atoms/Form";
 import Text from "../../atoms/Text";
 import * as util from '@reef-chain/util-lib';
+import { BigNumber, ethers } from "ethers";
 
 export interface Props {
   name?: string;
@@ -26,6 +27,8 @@ export interface Props {
   onForget?: () => any;
   className?: string;
   isEvmClaimed?: boolean;
+  lockedBalance?:BigNumber;
+  freeBalance?:BigNumber;
 }
 
 const Account = ({
@@ -35,6 +38,8 @@ const Account = ({
   source,
   isSelected,
   isEvmClaimed,
+  lockedBalance,
+  freeBalance,
   showOptions,
   onSelect,
   onRename,
@@ -138,6 +143,29 @@ const Account = ({
           />
         </div>
       }
+
+      {freeBalance && <div className="uik-account-selector-account__balance">
+      <div className="uik-account-selector-account__address">
+        Free Balance : 
+      </div>
+      <div className="uik-account-selector-account__balance">
+        <img src="/logo512.png" alt="" className="uik-account-selector-account__balance-icon"/>
+        <div className="uik-account-selector-account__address">
+        {freeBalance && freeBalance.gt(0)? `${ethers.utils.formatEther(freeBalance).substring(0,ethers.utils.formatEther(freeBalance).indexOf('.'))} REEFs`:"0 REEF"}
+        </div>
+      </div>
+      </div>}
+      {lockedBalance && <div className="uik-account-selector-account__balance">
+      <div className="uik-account-selector-account__address">
+        Locked Balance : 
+      </div>
+      <div className="uik-account-selector-account__balance">
+        <img src="/logo512.png" alt="" className="uik-account-selector-account__balance-icon"/>
+        <div className="uik-account-selector-account__address">
+        {lockedBalance && lockedBalance.gt(0)? `${ethers.utils.formatEther(lockedBalance).substring(0,ethers.utils.formatEther(lockedBalance).indexOf('.'))} REEFs`:"0 REEF"}
+        </div>
+      </div>
+      </div>}
 
         <a
           className="uik-account-selector-account__open-btn"
